@@ -106,7 +106,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_3"))
 	{
-		if (!preflightProcedures) {
+		if (!beforeTaxiProcedures) {
 			XPLMSpeakString("Beginning Before Taxi Procedures");
 			beforeTaxiProcedures = true;
 			timeElapsed = XPLMGetElapsedTime();
@@ -119,7 +119,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_4"))
 	{
-		if (!preflightProcedures) {
+		if (!beforeTakeoffProcedures) {
 			XPLMSpeakString("Beginning Before Takeoff Procedures");
 			beforeTakeoffProcedures = true;
 			timeElapsed = XPLMGetElapsedTime();
@@ -132,7 +132,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_clean"))
 	{
-		if (!preflightProcedures) {
+		if (!cleanUpProcedures) {
 			XPLMSpeakString("Beginning Clean Up Procedures");
 			cleanUpProcedures = true;
 			timeElapsed = XPLMGetElapsedTime();
@@ -145,7 +145,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_shutdown"))
 	{
-		if (!preflightProcedures) {
+		if (!shutdownProcedures) {
 			XPLMSpeakString("Beginning Shutdown Procedures");
 			shutdownProcedures = true;
 			timeElapsed = XPLMGetElapsedTime();
