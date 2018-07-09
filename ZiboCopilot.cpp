@@ -1,4 +1,11 @@
 //Created by Yohan Joo 18-06-21
+/*
+
+	ZIBO 3.27v changes:
+	Cab UTIL and PASS is not required?
+	Engine bleed is not required to put down.
+
+*/
 
 #if APL
 #if defined(__MACH__)
@@ -166,6 +173,8 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 
 	if (powerUpProcedures) {
 		if (timeElapsed + 2 < elapsed && ProcedureStage == 0) { //BATTERY ON AND COVER
+			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_1"));
+			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_2"));
 			XPLMCommandOnce(XPLMFindCommand("sim/electrical/battery_1_on"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover02"));
 			ProcedureStage++;
@@ -216,8 +225,8 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 			ProcedureStage++;
 		}
 		else if (timeElapsed + 6 < elapsed && ProcedureStage == 2) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/cab_util_toggle"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/ife_pass_seat_toggle"));
+			//XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/cab_util_toggle"));				For ZIBO 3.27v
+			//XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/ife_pass_seat_toggle"));
 			ProcedureStage++;
 		}
 		else if (timeElapsed + 6 < elapsed && ProcedureStage == 3) {
