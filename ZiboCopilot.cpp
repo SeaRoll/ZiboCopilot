@@ -21,6 +21,14 @@
 #include "XPLMProcessing.h"
 #include "XPLMDataAccess.h"
 #include "XPLMUtilities.h"
+#include "XPLMPlugin.h"
+#include "XPLMDisplay.h"
+#include "XPLMGraphics.h"
+#include "XPLMUtilities.h"
+#include "XPWidgets.h"
+#include "XPStandardWidgets.h"
+#include "XPLMScenery.h"
+#include <stdlib.h>
 
 #ifndef XPLM300
 #error This is made to be compiled against the XPLM300 SDK
@@ -36,7 +44,27 @@ bool shutdownProcedures = false;
 int ProcedureStage = 0;
 float timeElapsed = 0;
 
+
+//Commands
+XPLMCommandRef cmdpowerUpProcedures = NULL;
+XPLMCommandRef cmdpreflightProcedures = NULL;
+XPLMCommandRef cmdbeforeTaxiProcedures = NULL;
+XPLMCommandRef cmdbeforeTakeoffProcedures = NULL;
+XPLMCommandRef cmdcleanUpProcedures = NULL;
+XPLMCommandRef cmdshutdownProcedures = NULL;
+
+
+
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon);
+void startFunction(int Phase);
+
+//Command Functions
+int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 
 int g_menu_container_idx; // The index of our menu item in the Plugins menu
 XPLMMenuID g_menu_id; // The menu container we'll append all our menu items to
@@ -65,6 +93,20 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 		XPLMAppendMenuItemWithCommand(aircraft_menu, "Toggle Settings (Command-Based)", XPLMFindCommand("sim/operation/toggle_settings_window"));
 	}
 
+	//Commands
+	cmdpowerUpProcedures = XPLMCreateCommand("737/Zibocopilot/powerUpProcedure", "Power Up Procedure");
+	cmdpreflightProcedures = XPLMCreateCommand("737/Zibocopilot/preflightProcedure", "Preflight Procedure");
+	cmdbeforeTaxiProcedures = XPLMCreateCommand("737/Zibocopilot/beforeTaxiProcedure", "Before Taxi Procedure");
+	cmdbeforeTakeoffProcedures = XPLMCreateCommand("737/Zibocopilot/beforeTakeoffProcedure", "Before Takeoff Procedure");
+	cmdcleanUpProcedures = XPLMCreateCommand("737/Zibocopilot/cleanUpProcedure", "Clean Up Procedure");
+	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/shutdownProcedure", "Shutdown Procedure");
+	XPLMRegisterCommandHandler(cmdpowerUpProcedures, funcpowerUpProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdpreflightProcedures, funcpreflightProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdbeforeTaxiProcedures, funcbeforeTaxiProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdbeforeTakeoffProcedures, funcbeforeTakeoffProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdcleanUpProcedures, funccleanUpProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdshutdownProcedures, funcshutdownProcedures, 1, (void *)0);
+
 	return 1;
 }
 
@@ -88,17 +130,45 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 {
 	if (!strcmp((const char *)in_item_ref, "FlightProd_1"))
 	{
-		if(!powerUpProcedures) {
+		startFunction(0);
+	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_2"))
+	{
+		startFunction(1);
+	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_3"))
+	{
+		startFunction(2);
+	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_4"))
+	{
+		startFunction(3);
+	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_clean"))
+	{
+		startFunction(4);
+	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_shutdown"))
+	{
+		startFunction(5);
+	}
+}
+
+void startFunction (int Phase) {
+	if (Phase == 0)
+	{
+		if (!powerUpProcedures) {
 			XPLMSpeakString("Beginning Powerup Procedures");
 			powerUpProcedures = true;
 			timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
-		}else {
+		}
+		else {
 			powerUpProcedures = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (!strcmp((const char *)in_item_ref, "FlightProd_2"))
+	else if (Phase == 1)
 	{
 		if (!preflightProcedures) {
 			XPLMSpeakString("Beginning Preflight Procedures");
@@ -111,7 +181,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (!strcmp((const char *)in_item_ref, "FlightProd_3"))
+	else if (Phase == 2)
 	{
 		if (!beforeTaxiProcedures) {
 			XPLMSpeakString("Beginning Before Taxi Procedures");
@@ -124,7 +194,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (!strcmp((const char *)in_item_ref, "FlightProd_4"))
+	else if (Phase == 3)
 	{
 		if (!beforeTakeoffProcedures) {
 			XPLMSpeakString("Beginning Before Takeoff Procedures");
@@ -137,7 +207,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (!strcmp((const char *)in_item_ref, "FlightProd_clean"))
+	else if (Phase == 4)
 	{
 		if (!cleanUpProcedures) {
 			XPLMSpeakString("Beginning Clean Up Procedures");
@@ -150,7 +220,7 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (!strcmp((const char *)in_item_ref, "FlightProd_shutdown"))
+	else if (Phase == 5)
 	{
 		if (!shutdownProcedures) {
 			XPLMSpeakString("Beginning Shutdown Procedures");
@@ -501,4 +571,47 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 
 	/* Return 1.0 to indicate that we want to be called again in 1 second. */
 	return 1.0;
+}
+
+int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(0);
+	}
+	return 0;
+}
+int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(1);
+	}
+	return 0;
+}
+int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(2);
+	}
+	return 0;
+}
+int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(3);
+	}
+	return 0;
+}
+int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(4);
+	}
+	return 0;
+}
+int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		startFunction(5);
+	}
+	return 0;
 }
