@@ -1,6 +1,9 @@
 # ZiboCopilot
 X-Plane 11 Utility. Uses X-Plane 11 SDK to do automated procedures for the captain (user). At the moment, only Windows version is available
 
+*Newest Version is: 1.0.3*
+ - Added Next Procedure Command.
+
 ## Installation:
 Copy the plugins folder (in DEBUG Folder) and put it in X-Plane 11 Resource Folder
 
