@@ -32,6 +32,7 @@
 class SubHandler
 {
 public:
+	int ProcedureType = 0;
 	int ProcedureStage = 0;
 	float timeElapsed = 0;
 	bool doneProcedures = false;

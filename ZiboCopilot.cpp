@@ -40,6 +40,8 @@
 
 #include "SubHandler.h"
 SubHandler subHandler;
+XPLMMenuID g_menu_id;
+int g_menu_container_idx;
 
 
 //Commands
@@ -49,26 +51,24 @@ XPLMCommandRef cmdbeforeTaxiProcedures = NULL;
 XPLMCommandRef cmdbeforeTakeoffProcedures = NULL;
 XPLMCommandRef cmdcleanUpProcedures = NULL;
 XPLMCommandRef cmdshutdownProcedures = NULL;
+XPLMCommandRef cmdnextStep = NULL;
 
 
-
+//-------------------------------------------------------- Initiate Functions ------------------------------------//
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon);
 void startFunction(int Phase);
-
-//Command Functions
+void doNextProcedure();
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
-
-int g_menu_container_idx; // The index of our menu item in the Plugins menu
-XPLMMenuID g_menu_id; // The menu container we'll append all our menu items to
+int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 void menu_handler(void *, void *);
 
 
-//-------------------------------------------------------- START OF PLUGIN -----------------------//
+//-------------------------------------------------------- START OF PLUGIN --------------------------------------//
 PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 {
 	strcpy(outName, "ZiboCopilot");
@@ -83,6 +83,8 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", (void *)"FlightProd_4", 1);
 	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", (void *)"FlightProd_clean", 1);
 	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", (void *)"FlightProd_shutdown", 1);
+	XPLMAppendMenuSeparator(g_menu_id);
+	XPLMAppendMenuItem(g_menu_id, "Next Procedure", (void *)"FlightProd_next", 1);
 
 	XPLMMenuID aircraft_menu = XPLMFindAircraftMenu();
 	if (aircraft_menu) // This will be NULL unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
@@ -97,18 +99,20 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	cmdbeforeTakeoffProcedures = XPLMCreateCommand("737/Zibocopilot/beforeTakeoffProcedure", "Before Takeoff Procedure");
 	cmdcleanUpProcedures = XPLMCreateCommand("737/Zibocopilot/cleanUpProcedure", "Clean Up Procedure");
 	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/shutdownProcedure", "Shutdown Procedure");
+	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/nextStep", "Next Procedure");
 	XPLMRegisterCommandHandler(cmdpowerUpProcedures, funcpowerUpProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdpreflightProcedures, funcpreflightProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdbeforeTaxiProcedures, funcbeforeTaxiProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdbeforeTakeoffProcedures, funcbeforeTakeoffProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdcleanUpProcedures, funccleanUpProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdshutdownProcedures, funcshutdownProcedures, 1, (void *)0);
+	XPLMRegisterCommandHandler(cmdnextStep, funcnextProcedures, 1, (void *)0);
 
 	return 1;
 }
 
 
-//-------------------------------------------------------- DO NOT TOUCH ------------------------------------------//
+//-------------------------------------------------------- DO NOT TOUCH -----------------------------------------//
 PLUGIN_API void XPluginStop(void)
 {
 	// Since we created this menu, we'll be good citizens and clean it up as well
@@ -122,7 +126,7 @@ PLUGIN_API void XPluginReceiveMessage(XPLMPluginID inFrom, int inMsg, void * inP
 //-------------------------------------------------------- END --------------------------------------------------//
 
 
-// Handles all action from front-end
+//-------------------------------------------------------- SUB MENU HANDLER -------------------------------------//
 void menu_handler(void * in_menu_ref, void * in_item_ref)
 {
 	if (!strcmp((const char *)in_item_ref, "FlightProd_1"))
@@ -149,8 +153,14 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	{
 		startFunction(5);
 	}
+	else if (!strcmp((const char *)in_item_ref, "FlightProd_next"))
+	{
+		doNextProcedure();
+	}
 }
 
+
+//-------------------------------------------------------- Procedure Starter ------------------------------------//
 void startFunction (int Phase) {
 	if (Phase == 0)
 	{
@@ -238,7 +248,8 @@ void startFunction (int Phase) {
 	}
 }
 
-//The loop for procedures
+
+//-------------------------------------------------------- Procedure Loop ---------------------------------------//
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon)
 {
 	/* Elapsed Time */
@@ -256,6 +267,8 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 	return 1.0;
 }
 
+
+//-------------------------------------------------------- Command Functions ------------------------------------//
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -297,4 +310,23 @@ int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, v
 		startFunction(5);
 	}
 	return 0;
+}
+int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+	if (inPhase == xplm_CommandBegin)
+	{
+		doNextProcedure();
+	}
+	return 0;
+}
+
+
+//-------------------------------------------------------- Next Procedure Function ------------------------------//
+void doNextProcedure()
+{
+	if (subHandler.ProcedureType < 6)
+		startFunction(subHandler.ProcedureType);
+	else
+		subHandler.ProcedureType = 1;
+	
+	subHandler.ProcedureType++;
 }
