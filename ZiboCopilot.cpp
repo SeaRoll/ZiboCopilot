@@ -4,11 +4,6 @@
 	THIS IS HORRIBLE PROGRAMMING PRACTICE AND I KNOW IT.
 	I SUCK AT PROGRAMMING HELP.
 
-
-	ZIBO 3.27v changes:
-	Cab UTIL and PASS is not required?
-	Engine bleed is not required to put down.
-
 */
 
 #if APL
@@ -32,6 +27,7 @@
 #include "XPWidgets.h"
 #include "XPStandardWidgets.h"
 #include "XPLMScenery.h"
+#include "XPLMDataAccess.h"
 #include <stdlib.h>
 
 #ifndef XPLM300
