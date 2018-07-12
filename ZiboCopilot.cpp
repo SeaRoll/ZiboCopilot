@@ -99,7 +99,7 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	cmdbeforeTakeoffProcedures = XPLMCreateCommand("737/Zibocopilot/beforeTakeoffProcedure", "Before Takeoff Procedure");
 	cmdcleanUpProcedures = XPLMCreateCommand("737/Zibocopilot/cleanUpProcedure", "Clean Up Procedure");
 	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/shutdownProcedure", "Shutdown Procedure");
-	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/nextStep", "Next Procedure");
+	cmdnextStep = XPLMCreateCommand("737/Zibocopilot/nextStep", "Next Procedure");
 	XPLMRegisterCommandHandler(cmdpowerUpProcedures, funcpowerUpProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdpreflightProcedures, funcpreflightProcedures, 1, (void *)0);
 	XPLMRegisterCommandHandler(cmdbeforeTaxiProcedures, funcbeforeTaxiProcedures, 1, (void *)0);
