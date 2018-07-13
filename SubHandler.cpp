@@ -373,12 +373,17 @@ void SubHandler::doProcedures(float elapsed) {
 			ProcedureStage++;
 		}
 		else if (timeElapsed + 4 < elapsed && ProcedureStage == 2) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft1"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft2"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_ctr1"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_ctr2"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[6])) == 1)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft1"));
+
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[7])) == 1)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft2"));
+
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[8])) == 1)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
+
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[9])) == 1)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
 			ProcedureStage++;
 		}
 		else if (timeElapsed + 6 < elapsed && ProcedureStage == 3) {
