@@ -429,20 +429,20 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_1"));
 			ProcedureStage++;
 		}
-		else if (timeElapsed + 18 < elapsed && ProcedureStage == 13) {
+		else if (timeElapsed + 18 < elapsed && ProcedureStage == 12) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_apu"));
 			ProcedureStage++;
 		}
-		else if (timeElapsed + 19 < elapsed && ProcedureStage == 14) {
+		else if (timeElapsed + 19 < elapsed && ProcedureStage == 13) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_2"));
 			ProcedureStage++;
 		}
-		else if (timeElapsed + 20 < elapsed && ProcedureStage == 15) {
+		else if (timeElapsed + 20 < elapsed && ProcedureStage == 14) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng1_start_off"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng2_start_off"));
 			ProcedureStage++;
 		}
-		else if (timeElapsed + 21 < elapsed && ProcedureStage == 16) {
+		else if (timeElapsed + 21 < elapsed && ProcedureStage == 15) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_up"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/logo_light_off"));
 			XPLMCommandOnce(XPLMFindCommand("sim/lights/beacon_lights_toggle"));

@@ -323,6 +323,7 @@ void doNextProcedure()
 		startFunction(subHandler.ProcedureType);
 	else
 		subHandler.ProcedureType = 1;
+		startFunction(subHandler.ProcedureType);
 	
 	subHandler.ProcedureType++;
 }
