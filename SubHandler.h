@@ -35,6 +35,16 @@ using namespace std;
 class SubHandler
 {
 public:
+	enum Procedures
+	{
+		powerUp,
+		preFlight,
+		beforeTaxi,
+		beforeTakeOff,
+		cleanUp,
+		shutdown,
+		COUNT
+	};
 
 	const char dataRefList[100][255] = {
 		"laminar/B738/toggle_switch/irs_left",						//IRS LEFT 0
@@ -69,14 +79,10 @@ public:
 	int ProcedureStage = 0;
 	float timeElapsed = 0;
 	bool doneProcedures = false;
-	bool powerUpProcedures = false;
-	bool preflightProcedures = false;
-	bool beforeTaxiProcedures = false;
-	bool beforeTakeoffProcedures = false;
-	bool cleanUpProcedures = false;
-	bool shutdownProcedures = false;
+	bool procedures[COUNT] = { false };
 
 	// printname is not defined inside class defination
 	void doProcedures(float elapsed);
+	void finishProcedure(int id);
 };
 #endif

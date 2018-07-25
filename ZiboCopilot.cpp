@@ -38,6 +38,7 @@
 SubHandler subHandler;
 XPLMMenuID g_menu_id;
 int g_menu_container_idx;
+int current_procedure = 0;
 
 
 //Commands
@@ -52,7 +53,7 @@ XPLMCommandRef cmdnextStep = NULL;
 
 //-------------------------------------------------------- Initiate Functions ------------------------------------//
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon);
-void startFunction(int Phase);
+void startFunction(SubHandler::Procedures procedure);
 void doNextProcedure();
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
@@ -127,27 +128,27 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 {
 	if (!strcmp((const char *)in_item_ref, "FlightProd_1"))
 	{
-		startFunction(0);
+		startFunction(SubHandler::powerUp);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_2"))
 	{
-		startFunction(1);
+		startFunction(SubHandler::preFlight);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_3"))
 	{
-		startFunction(2);
+		startFunction(SubHandler::beforeTaxi);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_4"))
 	{
-		startFunction(3);
+		startFunction(SubHandler::beforeTaxi);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_clean"))
 	{
-		startFunction(4);
+		startFunction(SubHandler::cleanUp);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_shutdown"))
 	{
-		startFunction(5);
+		startFunction(SubHandler::shutdown);
 	}
 	else if (!strcmp((const char *)in_item_ref, "FlightProd_next"))
 	{
@@ -157,88 +158,88 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 
 
 //-------------------------------------------------------- Procedure Starter ------------------------------------//
-void startFunction (int Phase) {
-	if (Phase == 0)
+void startFunction (SubHandler::Procedures procedure) {
+	if (procedure == SubHandler::powerUp)
 	{
-		if (!subHandler.powerUpProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::powerUp]) {
 			XPLMSpeakString("Beginning Powerup Procedures");
-			subHandler.powerUpProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::powerUp] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.powerUpProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::powerUp] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (Phase == 1)
+	else if (procedure == SubHandler::preFlight)
 	{
-		if (!subHandler.preflightProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::preFlight]) {
 			XPLMSpeakString("Beginning Preflight Procedures");
-			subHandler.preflightProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::preFlight] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.preflightProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::preFlight] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (Phase == 2)
+	else if (procedure == SubHandler::beforeTaxi)
 	{
-		if (!subHandler.beforeTaxiProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::beforeTaxi]) {
 			XPLMSpeakString("Beginning Before Taxi Procedures");
-			subHandler.beforeTaxiProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::beforeTaxi] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.beforeTaxiProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::beforeTaxi] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (Phase == 3)
+	else if (procedure == SubHandler::beforeTakeOff)
 	{
-		if (!subHandler.beforeTakeoffProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::beforeTakeOff]) {
 			XPLMSpeakString("Beginning Before Takeoff Procedures");
-			subHandler.beforeTakeoffProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::beforeTakeOff] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.beforeTakeoffProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::beforeTakeOff] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (Phase == 4)
+	else if (procedure == SubHandler::cleanUp)
 	{
-		if (!subHandler.cleanUpProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::cleanUp]) {
 			XPLMSpeakString("Beginning Clean Up Procedures");
-			subHandler.cleanUpProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::cleanUp] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.cleanUpProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::cleanUp] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
-	else if (Phase == 5)
+	else if (procedure == SubHandler::shutdown)
 	{
-		if (!subHandler.shutdownProcedures) {
+		if (!subHandler.procedures[SubHandler::Procedures::shutdown]) {
 			XPLMSpeakString("Beginning Shutdown Procedures");
-			subHandler.shutdownProcedures = true;
+			subHandler.procedures[SubHandler::Procedures::shutdown] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, NULL);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.shutdownProcedures = false;
+			subHandler.procedures[SubHandler::Procedures::shutdown] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, NULL);
 		}
 	}
@@ -268,42 +269,42 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(0);
+		startFunction(SubHandler::powerUp);
 	}
 	return 0;
 }
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(1);
+		startFunction(SubHandler::preFlight);
 	}
 	return 0;
 }
 int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(2);
+		startFunction(SubHandler::beforeTaxi);
 	}
 	return 0;
 }
 int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(3);
+		startFunction(SubHandler::beforeTakeOff);
 	}
 	return 0;
 }
 int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(4);
+		startFunction(SubHandler::cleanUp);
 	}
 	return 0;
 }
 int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(5);
+		startFunction(SubHandler::shutdown);
 	}
 	return 0;
 }
@@ -319,11 +320,6 @@ int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void 
 //-------------------------------------------------------- Next Procedure Function ------------------------------//
 void doNextProcedure()
 {
-	if (subHandler.ProcedureType < 6)
-		startFunction(subHandler.ProcedureType);
-	else
-		subHandler.ProcedureType = 1;
-		startFunction(subHandler.ProcedureType);
-	
-	subHandler.ProcedureType++;
+	if (subHandler.ProcedureType < SubHandler::Procedures::COUNT)
+		startFunction(static_cast<SubHandler::Procedures>(subHandler.ProcedureType));
 }
