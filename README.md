@@ -71,6 +71,6 @@ These Procedures are not following exactly the FCOM Manual. However, they follow
  - Both Pack UP
  - Bleed OFF
  - Position, Logo, Anti Collision OFF
- 
+ - Battery OFF
  
  
