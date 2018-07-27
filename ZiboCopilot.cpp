@@ -74,14 +74,14 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 
 	g_menu_container_idx = XPLMAppendMenuItem(XPLMFindPluginsMenu(), "Copilot Menu", 0, 0);
 	g_menu_id = XPLMCreateMenu("Copilot Menu", XPLMFindPluginsMenu(), g_menu_container_idx, menu_handler, nullptr);
-	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", static_cast<void *>("power_up"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", static_cast<void *>("preflight"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", static_cast<void *>("before_taxi"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("before_takeoff"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("clean_up"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("shutdown"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", (void *)"power_up", 1);
+	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", (void *)"preflight", 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", (void *)"before_taxi", 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", (void *)"before_takeoff", 1);
+	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", (void *)"clean_up", 1);
+	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", (void *)"shutdown", 1);
 	XPLMAppendMenuSeparator(g_menu_id);
-	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("next_procedure"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Next Procedure", (void *)"next_procedure", 1);
 
 	const auto aircraft_menu = XPLMFindAircraftMenu();
 	if (aircraft_menu) // This will be nullptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
