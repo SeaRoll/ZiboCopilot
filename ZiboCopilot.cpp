@@ -74,14 +74,14 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 
 	g_menu_container_idx = XPLMAppendMenuItem(XPLMFindPluginsMenu(), "Copilot Menu", 0, 0);
 	g_menu_id = XPLMCreateMenu("Copilot Menu", XPLMFindPluginsMenu(), g_menu_container_idx, menu_handler, nullptr);
-	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", static_cast<void *>("FlightProd_1"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", static_cast<void *>("FlightProd_2"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", static_cast<void *>("FlightProd_3"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("FlightProd_4"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("FlightProd_clean"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("FlightProd_shutdown"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", static_cast<void *>("power_up"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", static_cast<void *>("preflight"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", static_cast<void *>("before_taxi"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("before_takeoff"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("clean_up"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("shutdown"), 1);
 	XPLMAppendMenuSeparator(g_menu_id);
-	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("FlightProd_next"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("next_procedure"), 1);
 
 	const auto aircraft_menu = XPLMFindAircraftMenu();
 	if (aircraft_menu) // This will be nullptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
@@ -127,31 +127,31 @@ PLUGIN_API void XPluginReceiveMessage(XPLMPluginID inFrom, int inMsg, void * inP
 void menu_handler(void * in_menu_ref, void * in_item_ref)
 {
 	const auto compare_string = static_cast<const char *>(in_item_ref);
-	if (!strcmp(compare_string, "FlightProd_1"))
+	if (!strcmp(compare_string, "power_up"))
 	{
 		startFunction(SubHandler::powerUp);
 	}
-	else if (!strcmp(compare_string, "FlightProd_2"))
+	else if (!strcmp(compare_string, "preflight"))
 	{
 		startFunction(SubHandler::preFlight);
 	}
-	else if (!strcmp(compare_string, "FlightProd_3"))
+	else if (!strcmp(compare_string, "before_taxi"))
 	{
 		startFunction(SubHandler::beforeTaxi);
 	}
-	else if (!strcmp(compare_string, "FlightProd_4"))
+	else if (!strcmp(compare_string, "before_takeoff"))
 	{
-		startFunction(SubHandler::beforeTaxi);
+		startFunction(SubHandler::beforeTakeOff);
 	}
-	else if (!strcmp(compare_string, "FlightProd_clean"))
+	else if (!strcmp(compare_string, "clean_up"))
 	{
 		startFunction(SubHandler::cleanUp);
 	}
-	else if (!strcmp(compare_string, "FlightProd_shutdown"))
+	else if (!strcmp(compare_string, "shutdown"))
 	{
 		startFunction(SubHandler::shutdown);
 	}
-	else if (!strcmp(compare_string, "FlightProd_next"))
+	else if (!strcmp(compare_string, "next_procedure"))
 	{
 		doNextProcedure();
 	}
