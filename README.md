@@ -5,7 +5,7 @@ X-Plane 11 Utility. Uses X-Plane 11 SDK to do automated procedures for the capta
  - Fixed Next procedure
 
 ## Installation:
-Copy the plugins folder (in DEBUG Folder) and put it in X-Plane 11 Resource Folder
+Download latest release from [here](https://github.com/SeaRoll/ZiboCopilot/releases/latest) and place the folder inside Plugins folder in your X-Plane directory
 
 ## What are the exact procedures?
 These Procedures are not following exactly the FCOM Manual. However, they follow so that you can fly directly again.
@@ -14,7 +14,7 @@ These Procedures are not following exactly the FCOM Manual. However, they follow
  - Battery ON
  - Standby Power ON
  - APU START & CONNECT
- - Irs ALIGN
+ - IRS ALIGN
 
 #### Preflight Procedures:
  - Yaw Damper ON
