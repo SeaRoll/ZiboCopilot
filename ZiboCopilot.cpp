@@ -129,23 +129,23 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	const auto compare_string = static_cast<const char *>(in_item_ref);
 	if (!strcmp(compare_string, "power_up"))
 	{
-		startFunction(SubHandler::powerUp);
+		startFunction(SubHandler::power_up);
 	}
 	else if (!strcmp(compare_string, "preflight"))
 	{
-		startFunction(SubHandler::preFlight);
+		startFunction(SubHandler::pre_flight);
 	}
 	else if (!strcmp(compare_string, "before_taxi"))
 	{
-		startFunction(SubHandler::beforeTaxi);
+		startFunction(SubHandler::before_taxi);
 	}
 	else if (!strcmp(compare_string, "before_takeoff"))
 	{
-		startFunction(SubHandler::beforeTakeOff);
+		startFunction(SubHandler::before_take_off);
 	}
 	else if (!strcmp(compare_string, "clean_up"))
 	{
-		startFunction(SubHandler::cleanUp);
+		startFunction(SubHandler::clean_up);
 	}
 	else if (!strcmp(compare_string, "shutdown"))
 	{
@@ -160,73 +160,73 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 
 //-------------------------------------------------------- Procedure Starter ------------------------------------//
 void startFunction (SubHandler::Procedures procedure) {
-	if (procedure == SubHandler::powerUp)
+	if (procedure == SubHandler::power_up)
 	{
-		if (!subHandler.procedures[SubHandler::Procedures::powerUp]) {
+		if (!subHandler.procedures[SubHandler::Procedures::power_up]) {
 			XPLMSpeakString("Beginning Powerup Procedures");
-			subHandler.procedures[SubHandler::Procedures::powerUp] = true;
+			subHandler.procedures[SubHandler::Procedures::power_up] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.procedures[SubHandler::Procedures::powerUp] = false;
+			subHandler.procedures[SubHandler::Procedures::power_up] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
-	else if (procedure == SubHandler::preFlight)
+	else if (procedure == SubHandler::pre_flight)
 	{
-		if (!subHandler.procedures[SubHandler::Procedures::preFlight]) {
+		if (!subHandler.procedures[SubHandler::Procedures::pre_flight]) {
 			XPLMSpeakString("Beginning Preflight Procedures");
-			subHandler.procedures[SubHandler::Procedures::preFlight] = true;
+			subHandler.procedures[SubHandler::Procedures::pre_flight] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.procedures[SubHandler::Procedures::preFlight] = false;
+			subHandler.procedures[SubHandler::Procedures::pre_flight] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
-	else if (procedure == SubHandler::beforeTaxi)
+	else if (procedure == SubHandler::before_taxi)
 	{
-		if (!subHandler.procedures[SubHandler::Procedures::beforeTaxi]) {
+		if (!subHandler.procedures[SubHandler::Procedures::before_taxi]) {
 			XPLMSpeakString("Beginning Before Taxi Procedures");
-			subHandler.procedures[SubHandler::Procedures::beforeTaxi] = true;
+			subHandler.procedures[SubHandler::Procedures::before_taxi] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.procedures[SubHandler::Procedures::beforeTaxi] = false;
+			subHandler.procedures[SubHandler::Procedures::before_taxi] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
-	else if (procedure == SubHandler::beforeTakeOff)
+	else if (procedure == SubHandler::before_take_off)
 	{
-		if (!subHandler.procedures[SubHandler::Procedures::beforeTakeOff]) {
+		if (!subHandler.procedures[SubHandler::Procedures::before_take_off]) {
 			XPLMSpeakString("Beginning Before Takeoff Procedures");
-			subHandler.procedures[SubHandler::Procedures::beforeTakeOff] = true;
+			subHandler.procedures[SubHandler::Procedures::before_take_off] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.procedures[SubHandler::Procedures::beforeTakeOff] = false;
+			subHandler.procedures[SubHandler::Procedures::before_take_off] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
-	else if (procedure == SubHandler::cleanUp)
+	else if (procedure == SubHandler::clean_up)
 	{
-		if (!subHandler.procedures[SubHandler::Procedures::cleanUp]) {
+		if (!subHandler.procedures[SubHandler::Procedures::clean_up]) {
 			XPLMSpeakString("Beginning Clean Up Procedures");
-			subHandler.procedures[SubHandler::Procedures::cleanUp] = true;
+			subHandler.procedures[SubHandler::Procedures::clean_up] = true;
 			subHandler.timeElapsed = XPLMGetElapsedTime();
 			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
 		}
 		else {
 			subHandler.ProcedureStage = 0;
-			subHandler.procedures[SubHandler::Procedures::cleanUp] = false;
+			subHandler.procedures[SubHandler::Procedures::clean_up] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
@@ -270,35 +270,35 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(SubHandler::powerUp);
+		startFunction(SubHandler::power_up);
 	}
 	return 0;
 }
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(SubHandler::preFlight);
+		startFunction(SubHandler::pre_flight);
 	}
 	return 0;
 }
 int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(SubHandler::beforeTaxi);
+		startFunction(SubHandler::before_taxi);
 	}
 	return 0;
 }
 int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(SubHandler::beforeTakeOff);
+		startFunction(SubHandler::before_take_off);
 	}
 	return 0;
 }
 int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
 	if (inPhase == xplm_CommandBegin)
 	{
-		startFunction(SubHandler::cleanUp);
+		startFunction(SubHandler::clean_up);
 	}
 	return 0;
 }
@@ -321,6 +321,6 @@ int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void 
 //-------------------------------------------------------- Next Procedure Function ------------------------------//
 void doNextProcedure()
 {
-	if (subHandler.ProcedureType < SubHandler::Procedures::COUNT)
+	if (subHandler.ProcedureType < SubHandler::Procedures::count)
 		startFunction(static_cast<SubHandler::Procedures>(subHandler.ProcedureType));
 }
