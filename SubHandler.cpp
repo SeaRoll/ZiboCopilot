@@ -4,7 +4,7 @@
 #endif
 #endif
 #include "XPLMMenus.h"
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #if IBM
 #include <windows.h>
@@ -20,7 +20,7 @@
 #include "XPStandardWidgets.h"
 #include "XPLMScenery.h"
 #include "XPLMDataAccess.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 
 using namespace std;
