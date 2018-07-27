@@ -8,7 +8,7 @@
 #endif
 #endif
 #include "XPLMMenus.h"
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #if IBM
 #include <windows.h>
@@ -24,7 +24,7 @@
 #include "XPStandardWidgets.h"
 #include "XPLMScenery.h"
 #include "XPLMDataAccess.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifndef XPLM300
 #error This is made to be compiled against the XPLM300 SDK
@@ -37,13 +37,13 @@ class SubHandler
 public:
 	enum Procedures
 	{
-		powerUp,
-		preFlight,
-		beforeTaxi,
-		beforeTakeOff,
-		cleanUp,
+		power_up,
+		pre_flight,
+		before_taxi,
+		before_take_off,
+		clean_up,
 		shutdown,
-		COUNT
+		count
 	};
 
 	const char dataRefList[100][255] = {
@@ -79,7 +79,7 @@ public:
 	int ProcedureStage = 0;
 	float timeElapsed = 0;
 	bool doneProcedures = false;
-	bool procedures[COUNT] = { false };
+	bool procedures[count] = { false };
 
 	// printname is not defined inside class defination
 	void doProcedures(float elapsed);
