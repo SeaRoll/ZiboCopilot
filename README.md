@@ -1,9 +1,6 @@
 # ZiboCopilot
 X-Plane 11 Utility. Uses X-Plane 11 SDK to do automated procedures for the captain (user). At the moment, only Windows version is available
 
-*Newest Version is: 1.0.5*
- - Fixed Next procedure
-
 ## Installation:
 Download latest release from [here](https://github.com/SeaRoll/ZiboCopilot/releases/latest) and place the folder inside Plugins folder in your X-Plane directory
 
