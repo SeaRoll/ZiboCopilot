@@ -323,5 +323,5 @@ int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void 
 void doNextProcedure()
 {
 	if (subHandler.ProcedureType < SubHandler::Procedures::count)
-		startFunction(static_cast<SubHandler::Procedures>(subHandler.ProcedureType));
+		startFunction((SubHandler::Procedures)subHandler.ProcedureType);
 }
