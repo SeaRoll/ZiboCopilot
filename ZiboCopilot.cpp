@@ -77,11 +77,11 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", static_cast<void *>("power_up"), 1);
 	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", static_cast<void *>("preflight"), 1);
 	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", static_cast<void *>("before_taxi"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("FlightProd_4"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("FlightProd_clean"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("FlightProd_shutdown"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("before_takeoff"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("clean_up"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("shutdown"), 1);
 	XPLMAppendMenuSeparator(g_menu_id);
-	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("FlightProd_next"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("next_procedure"), 1);
 
 	const auto aircraft_menu = XPLMFindAircraftMenu();
 	if (aircraft_menu) // This will be nullptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
@@ -139,19 +139,19 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	{
 		startFunction(SubHandler::beforeTaxi);
 	}
-	else if (!strcmp(compare_string, "FlightProd_4"))
+	else if (!strcmp(compare_string, "before_takeoff"))
 	{
 		startFunction(SubHandler::beforeTakeOff);
 	}
-	else if (!strcmp(compare_string, "FlightProd_clean"))
+	else if (!strcmp(compare_string, "clean_up"))
 	{
 		startFunction(SubHandler::cleanUp);
 	}
-	else if (!strcmp(compare_string, "FlightProd_shutdown"))
+	else if (!strcmp(compare_string, "shutdown"))
 	{
 		startFunction(SubHandler::shutdown);
 	}
-	else if (!strcmp(compare_string, "FlightProd_next"))
+	else if (!strcmp(compare_string, "next_procedure"))
 	{
 		doNextProcedure();
 	}
