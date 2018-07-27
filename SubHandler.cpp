@@ -41,7 +41,7 @@ void SubHandler::finishProcedure(int id)
 
 
 void SubHandler::doProcedures(float elapsed) {
-	if (procedures[powerUp]) {
+	if (procedures[power_up]) {
 		if (timeElapsed + 2 < elapsed && ProcedureStage == 0) { //BATTERY ON AND COVER
 			XPLMCommandOnce(XPLMFindCommand("sim/electrical/battery_1_on"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover02"));
@@ -79,11 +79,11 @@ void SubHandler::doProcedures(float elapsed) {
 			}
 
 			XPLMSpeakString("Powerup Procedures Completed");
-			finishProcedure(powerUp);
+			finishProcedure(power_up);
 		}
 	}
 
-	if (procedures[preFlight]) {
+	if (procedures[pre_flight]) {
 		if (timeElapsed + 2 < elapsed && ProcedureStage == 0) {	//YAW DAMPER
 			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[2])) < 1)
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/yaw_dumper"));
@@ -217,12 +217,12 @@ void SubHandler::doProcedures(float elapsed) {
 			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[22])) == 0)
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
 			XPLMSpeakString("Preflight Procedures Completed");
-			finishProcedure(preFlight);
+			finishProcedure(pre_flight);
 
 		}
 	}
 
-	if (procedures[beforeTaxi]) {
+	if (procedures[before_taxi]) {
 		if (timeElapsed + 2 < elapsed && ProcedureStage == 0) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/gen2_dn"));
 			ProcedureStage++;
@@ -278,11 +278,11 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/flaps_down"));
 			XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/flaps_down"));
 			XPLMSpeakString("Before Taxi Procedures Completed");
-			finishProcedure(beforeTaxi);
+			finishProcedure(before_taxi);
 		}
 	}
 
-	if (procedures[beforeTakeOff]) {
+	if (procedures[before_take_off]) {
 		if (timeElapsed + 1 < elapsed && ProcedureStage == 0) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_up"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_up"));
@@ -304,11 +304,11 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
 			XPLMSpeakString("Before Takeoff Procedures Completed");
-			finishProcedure(beforeTakeOff);
+			finishProcedure(before_take_off);
 		}
 	}
 
-	if (procedures[cleanUp]) {
+	if (procedures[clean_up]) {
 		if (timeElapsed + 1 < elapsed && ProcedureStage == 0) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_down"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_down"));
@@ -352,7 +352,7 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_dn"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_dn"));
 			XPLMSpeakString("Clean Up Procedures Completed");
-			finishProcedure(cleanUp);
+			finishProcedure(clean_up);
 		}
 	}
 

@@ -8,7 +8,7 @@
 #endif
 #endif
 #include "XPLMMenus.h"
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #if IBM
 #include <windows.h>
@@ -24,7 +24,7 @@
 #include "XPStandardWidgets.h"
 #include "XPLMScenery.h"
 #include "XPLMDataAccess.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 #ifndef XPLM300
 #error This is made to be compiled against the XPLM300 SDK
