@@ -74,17 +74,17 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 
 	g_menu_container_idx = XPLMAppendMenuItem(XPLMFindPluginsMenu(), "Copilot Menu", 0, 0);
 	g_menu_id = XPLMCreateMenu("Copilot Menu", XPLMFindPluginsMenu(), g_menu_container_idx, menu_handler, nullptr);
-	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", static_cast<void *>("FlightProd_1"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", static_cast<void *>("FlightProd_2"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", static_cast<void *>("FlightProd_3"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", static_cast<void *>("FlightProd_4"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", static_cast<void *>("FlightProd_clean"), 1);
-	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", static_cast<void *>("FlightProd_shutdown"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Powerup Procedure", (void *)"FlightProd_1", 1);
+	XPLMAppendMenuItem(g_menu_id, "Preflight Procedures", (void *)"FlightProd_2", 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Taxi Procedures", (void *)"FlightProd_3", 1);
+	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", (void *)"FlightProd_4", 1);
+	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", (void *)"FlightProd_clean", 1);
+	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", (void *)"FlightProd_shutdown", 1);
 	XPLMAppendMenuSeparator(g_menu_id);
-	XPLMAppendMenuItem(g_menu_id, "Next Procedure", static_cast<void *>("FlightProd_next"), 1);
+	XPLMAppendMenuItem(g_menu_id, "Next Procedure", (void *)"FlightProd_next", 1);
 
 	const auto aircraft_menu = XPLMFindAircraftMenu();
-	if (aircraft_menu) // This will be nullptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
+	if (aircraft_menu) // This will be nullptrptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
 	{
 		XPLMAppendMenuItemWithCommand(aircraft_menu, "Toggle Settings (Command-Based)", XPLMFindCommand("sim/operation/toggle_settings_window"));
 	}
