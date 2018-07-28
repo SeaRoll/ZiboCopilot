@@ -72,32 +72,41 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandEnd(XPLMFindCommand("laminar/B738/spring_toggle_switch/APU_start_pos_dn"));
 			ProcedureStage++;
 		}
-		else if (ProcedureStage == 6 && XPLMGetDatai(XPLMFindDataRef(dataRefList[25])) == 1) { //APU GEN
-			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
-			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 7)
+		else if (ProcedureStage == 6) // LEFT IRS TO NAV
 		{
-			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
-			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 8) { //IRS ALIGN
 			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) == 3)
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_left"));
 			else
 				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) != 2) {
 					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
 				}
-
+			ProcedureStage++;
+		}
+		else if (ProcedureStage == 7)  // RIGHT IRS TO NAV
+		{
 			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) == 3)
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_left"));
 			else
 				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) != 2) {
 					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
 				}
-
+			ProcedureStage++;
+		}
+		else if (ProcedureStage == 8 && XPLMGetDatai(XPLMFindDataRef(dataRefList[25])) == 1) { //APU GEN
+			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
+			ProcedureStage++;
+		}
+		else if (ProcedureStage == 9) { //APU GEN
+			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
+			ProcedureStage++;
+		}
+		else if (ProcedureStage == 10 && XPLMGetDatai(XPLMFindDataRef(dataRefList[25])) == 1)
+		{
+			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
+			ProcedureStage++;
+		}
+		else if (ProcedureStage == 11) { //APU GEN
+			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
 			XPLMSpeakString("Powerup Procedures Completed");
 			finishProcedure(power_up);
 		}
@@ -247,8 +256,7 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/gen2_dn"));
 			ProcedureStage++;
 		}
-		else if (ProcedureStage == 1)
-		{
+		else if (ProcedureStage == 1) {
 			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/gen2_dn"));
 			ProcedureStage++;
 		}
