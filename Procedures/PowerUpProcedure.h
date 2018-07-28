@@ -1,6 +1,8 @@
+//Header Procedure files can inherit from
+
 #pragma once
-#ifndef SubHandler_H
-#define SubHandler_H
+#ifndef PowerUpProcedure_H
+#define PowerUpProcedure_H
 
 #if APL
 #if defined(__MACH__)
@@ -26,36 +28,17 @@
 #include "XPLMDataAccess.h"
 #include <cstdlib>
 
-#include "../ZiboCopilot/Procedures/DataRefList.h"
-
 #ifndef XPLM300
 #error This is made to be compiled against the XPLM300 SDK
 #endif
 
 using namespace std;
 
-class SubHandler : public DataRefList
+class PowerUpProcedure
 {
 public:
-	enum Procedures
-	{
-		power_up,
-		pre_flight,
-		before_taxi,
-		before_take_off,
-		clean_up,
-		shutdown,
-		count
-	};
+	
+	static int powerUpProcedure(int stage);
 
-	int ProcedureType = 0;
-	int ProcedureStage = 0;
-	float timeElapsed = 0;
-	bool doneProcedures = false;
-	bool procedures[count] = { false };
-
-	// printname is not defined inside class defination
-	void doProcedures(float elapsed);
-	void finishProcedure(int id);
 };
 #endif

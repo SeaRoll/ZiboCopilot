@@ -144,10 +144,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Procedures\PowerUpProcedure.cpp" />
     <ClCompile Include="SubHandler.cpp" />
     <ClCompile Include="ZiboCopilot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Procedures\DataRefList.h" />
+    <ClInclude Include="Procedures\PowerUpProcedure.h" />
     <ClInclude Include="SubHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

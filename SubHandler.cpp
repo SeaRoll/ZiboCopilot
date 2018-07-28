@@ -30,6 +30,7 @@ using namespace std;
 #endif
 
 #include "SubHandler.h"
+#include "../ZiboCopilot/Procedures/PowerUpProcedure.h"
 
 void SubHandler::finishProcedure(int id)
 {
@@ -44,72 +45,10 @@ void SubHandler::finishProcedure(int id)
 
 void SubHandler::doProcedures(float elapsed) {
 	if (procedures[power_up]) {
-		if (ProcedureStage == 0) { //BATTERY ON AND COVER
-			XPLMCommandOnce(XPLMFindCommand("sim/electrical/battery_1_on"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover02"));
+		if(PowerUpProcedure::powerUpProcedure(ProcedureStage) == 1)
 			ProcedureStage++;
-		}
-		else if (ProcedureStage == 1) { //STANDBY POWER ON
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/standby_bat_on"));
-			//XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover03"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 2) { //GPU ON
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/gpu_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 3) { //APU
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/spring_toggle_switch/APU_start_pos_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 4)
-		{
-			XPLMCommandBegin(XPLMFindCommand("laminar/B738/spring_toggle_switch/APU_start_pos_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 5) // APU BUTTON RELEASE
-		{
-			XPLMCommandEnd(XPLMFindCommand("laminar/B738/spring_toggle_switch/APU_start_pos_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 6) // LEFT IRS TO NAV
-		{
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) == 3)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_left"));
-			else
-				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) != 2) {
-					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
-				}
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 7)  // RIGHT IRS TO NAV
-		{
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) == 3)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_left"));
-			else
-				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) != 2) {
-					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
-				}
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 8 && XPLMGetDatai(XPLMFindDataRef(dataRefList[25])) == 1) { //APU GEN
-			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 9) { //APU GEN
-			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 10 && XPLMGetDatai(XPLMFindDataRef(dataRefList[25])) == 1)
-		{
-			XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 11) { //APU GEN
-			XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
-			XPLMSpeakString("Powerup Procedures Completed");
+		else if(PowerUpProcedure::powerUpProcedure(ProcedureStage) == 2)
 			finishProcedure(power_up);
-		}
 	}
 
 	if (procedures[pre_flight]) {
