@@ -35,7 +35,9 @@ void SubHandler::finishProcedure(int id)
 {
 	procedures[id] = false;
 	ProcedureStage = 0;
-	ProcedureType++;
+	ProcedureType = id + 1;
+	if (ProcedureType >= count)
+		ProcedureType = 0;
 	doneProcedures = true;
 }
 
@@ -82,16 +84,19 @@ void SubHandler::doProcedures(float elapsed) {
 			ProcedureStage++;
 		}
 		else if (ProcedureStage == 8) { //IRS ALIGN
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) == 3)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_left"));
+			else
+				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) != 2) {
+					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
+				}
 
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) < 2) {
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
-			}
-
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[0])) < 2) {
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
-			}
+			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) == 3)
+				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_left"));
+			else
+				while (XPLMGetDatai(XPLMFindDataRef(dataRefList[1])) != 2) {
+					XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
+				}
 
 			XPLMSpeakString("Powerup Procedures Completed");
 			finishProcedure(power_up);
