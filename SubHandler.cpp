@@ -30,7 +30,7 @@ using namespace std;
 #endif
 
 #include "SubHandler.h"
-#include "../ZiboCopilot/Procedures/PowerUpProcedure.h"
+#include "Procedures/PowerUpProcedure.h"
 
 void SubHandler::finishProcedure(int id)
 {
@@ -102,7 +102,7 @@ void SubHandler::doProcedures(float elapsed) {
 			ProcedureStage++;
 		}
 		else if (ProcedureStage == 4) { //EMERGENCY LIGHTS
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[12])) < 1)
+			if (XPLMGetDatad(XPLMFindDataRef(dataRefList[12])) != 1)
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover09"));
 			ProcedureStage++;
 		}
@@ -430,7 +430,6 @@ void SubHandler::doProcedures(float elapsed) {
 			XPLMCommandOnce(XPLMFindCommand("sim/electrical/battery_1_off"));
 			XPLMSpeakString("Shutdown Procedures Completed");
 			finishProcedure(shutdown);
-			ProcedureType = 0;
 		}
 	}
 }
