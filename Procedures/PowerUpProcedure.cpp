@@ -27,8 +27,6 @@ using namespace std;
 #include "PowerUpProcedure.h"
 #include "DataRefList.h"
 
-DataRefList data_ref_list;
-
 int PowerUpProcedure::powerUpProcedure(int stage)
 {
 	if (stage == 0) { //BATTERY ON AND COVER
@@ -61,25 +59,25 @@ int PowerUpProcedure::powerUpProcedure(int stage)
 	}
 	else if (stage == 6) // LEFT IRS TO NAV
 	{
-		if (XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[0])) == 3)
+		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[0])) == 3)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_left"));
 		else
-			while (XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[0])) != 2) {
+			while (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[0])) != 2) {
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_L_right"));
 			}
 		return 1;
 	}
 	else if (stage == 7)  // RIGHT IRS TO NAV
 	{
-		if (XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[1])) == 3)
+		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[1])) == 3)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_left"));
 		else
-			while (XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[1])) != 2) {
+			while (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[1])) != 2) {
 				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_R_right"));
 			}
 		return 1;
 	}
-	else if (stage == 8 && XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[25])) == 1) { //APU GEN
+	else if (stage == 8 && XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[25])) == 1) { //APU GEN
 		XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
 		return 1;
 	}
@@ -87,7 +85,7 @@ int PowerUpProcedure::powerUpProcedure(int stage)
 		XPLMCommandEnd(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen1_dn"));
 		return 1;
 	}
-	else if (stage == 10 && XPLMGetDatai(XPLMFindDataRef(data_ref_list.dataRefList[25])) == 1)
+	else if (stage == 10 && XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[25])) == 1)
 	{
 		XPLMCommandBegin(XPLMFindCommand("laminar/B738/toggle_switch/apu_gen2_dn"));
 		return 1;

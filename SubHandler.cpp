@@ -30,12 +30,8 @@ using namespace std;
 #endif
 
 #include "SubHandler.h"
-<<<<<<< HEAD
 #include "../ZiboCopilot/Procedures/PowerUpProcedure.h"
 #include "../ZiboCopilot/Procedures/PreflightProcedure.h"
-=======
-#include "Procedures/PowerUpProcedure.h"
->>>>>>> af51d87fa2724e2f9b1bfcaf2d2a59f9c9188bcb
 
 void SubHandler::finishProcedure(int id)
 {
@@ -59,140 +55,9 @@ void SubHandler::doProcedures(float elapsed) {
 	if (procedures[pre_flight]) {
 		if (PreflightProcedure::preflightProcedure(ProcedureStage) == 1)
 			ProcedureStage++;
-<<<<<<< HEAD
 		else if (PreflightProcedure::preflightProcedure(ProcedureStage) == 2)
-=======
-		}
-		else if (ProcedureStage == 1) { //NAVIGATION PANEL
-
-			//VHF NAV SOURCE
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[3])) < 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/vhf_nav_source_rgt"));
-			else if (XPLMGetDatai(XPLMFindDataRef(dataRefList[3])) > 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/vhf_nav_source_lft"));
-
-			//IRS SOURCE
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[4])) < 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_source_right"));
-			else if (XPLMGetDatai(XPLMFindDataRef(dataRefList[4])) > 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/irs_source_left"));
-
-			//FMC SOURCE
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[5])) < 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fmc_source_right"));
-			else if (XPLMGetDatai(XPLMFindDataRef(dataRefList[5])) > 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fmc_source_left"));
-
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 2) { //FUEL PUMPS
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[6])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft1"));
-
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[7])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft2"));
-
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[8])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
-
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[9])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 3) { //CAB UTIL, PASS SEAT
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[10])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/cab_util_toggle"));
-
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[11])) < 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/ife_pass_seat_toggle"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 4) { //EMERGENCY LIGHTS
-			if (XPLMGetDatad(XPLMFindDataRef(dataRefList[12])) != 1)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover09"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 5) { //SEAT BELTS
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[13])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/seatbelt_sign_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 6) { //NO SMOKING ALWAYS ON
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/no_smoking_dn"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/no_smoking_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 7) { //WINDOW HEAT
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[14])) == 0) {
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_l_fwd"));
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_l_side"));
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_r_fwd"));
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_r_side"));
-			}
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 8) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[15])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/electric_hydro_pumps1"));
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[16])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/electric_hydro_pumps2"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 9) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[17])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/trim_air"));
-
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 10) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/l_pack_up"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 11) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/iso_valve_dn"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 12) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/r_pack_up"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 13) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[18])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_1"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 14) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[20])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_apu"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 15) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[19])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_2"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 16) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_down"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/logo_light_on"));
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[21])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("sim/lights/beacon_lights_toggle"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 17) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/eng_start_source_right"));
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/eng_start_source_right"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 18) {
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_flow_up"));
-			ProcedureStage++;
-		}
-		else if (ProcedureStage == 19) {
-			if (XPLMGetDatai(XPLMFindDataRef(dataRefList[22])) == 0)
-				XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
-			XPLMSpeakString("Preflight Procedures Completed");
->>>>>>> af51d87fa2724e2f9b1bfcaf2d2a59f9c9188bcb
 			finishProcedure(pre_flight);
+
 	}
 
 	if (procedures[before_taxi]) {
