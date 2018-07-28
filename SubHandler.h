@@ -25,8 +25,7 @@
 #include "XPLMScenery.h"
 #include "XPLMDataAccess.h"
 #include <cstdlib>
-
-#include "../ZiboCopilot/Procedures/DataRefList.h"
+#include "Procedures/DataRefList.h"
 
 #ifndef XPLM300
 #error This is made to be compiled against the XPLM300 SDK
