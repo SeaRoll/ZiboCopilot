@@ -30,8 +30,8 @@ using namespace std;
 #endif
 
 #include "SubHandler.h"
-#include "../ZiboCopilot/Procedures/PowerUpProcedure.h"
-#include "../ZiboCopilot/Procedures/PreflightProcedure.h"
+#include "Procedures/PowerUpProcedure.h"
+#include "Procedures/PreflightProcedure.h"
 
 void SubHandler::finishProcedure(int id)
 {
