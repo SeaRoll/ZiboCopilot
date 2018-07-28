@@ -72,6 +72,7 @@ public:
 		"laminar/B738/autobrake/autobrake_RTO_arm",					//RTO arm 22
 		"laminar/B738/toggle_switch/capt_probes_pos",				//PROBE HEAT L 23
 		"laminar/B738/toggle_switch/fo_probes_pos",					//PROBE HEAT R 24
+		"laminar/B738/electrical/apu_bus_enable",					//CHECK APU BUS LIT 25
 		""
 	};
 

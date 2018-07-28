@@ -171,6 +171,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Powerup Procedures");
 			subHandler.procedures[SubHandler::Procedures::power_up] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
@@ -185,6 +186,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Preflight Procedures");
 			subHandler.procedures[SubHandler::Procedures::pre_flight] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
@@ -199,6 +201,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Before Taxi Procedures");
 			subHandler.procedures[SubHandler::Procedures::before_taxi] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
@@ -213,6 +216,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Before Takeoff Procedures");
 			subHandler.procedures[SubHandler::Procedures::before_take_off] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
@@ -227,6 +231,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Clean Up Procedures");
 			subHandler.procedures[SubHandler::Procedures::clean_up] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
@@ -241,6 +246,7 @@ void startFunction (SubHandler::Procedures procedure) {
 		}
 		else {
 			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Shutdown Procedures");
 			subHandler.procedures[SubHandler::Procedures::shutdown] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
