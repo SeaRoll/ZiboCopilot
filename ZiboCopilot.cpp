@@ -55,6 +55,7 @@ XPLMCommandRef cmdnextStep = nullptr;
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon);
 void startFunction(SubHandler::Procedures procedure);
 void doNextProcedure();
+bool canStartNewProcedure();
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
@@ -127,7 +128,7 @@ PLUGIN_API void XPluginReceiveMessage(XPLMPluginID inFrom, int inMsg, void * inP
 //-------------------------------------------------------- SUB MENU HANDLER -------------------------------------//
 void menu_handler(void * in_menu_ref, void * in_item_ref)
 {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return;
 	const auto compare_string = static_cast<const char *>(in_item_ref);
 	if (!strcmp(compare_string, "power_up"))
@@ -277,16 +278,17 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 
 //-------------------------------------------------------- Command Functions ------------------------------------//
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
 		startFunction(SubHandler::power_up);
 	}
 	return 0;
+	
 }
 int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -295,7 +297,7 @@ int funcpreflightProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, 
 	return 0;
 }
 int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -304,7 +306,7 @@ int funcbeforeTaxiProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase,
 	return 0;
 }
 int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -313,7 +315,7 @@ int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPha
 	return 0;
 }
 int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -322,7 +324,7 @@ int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, vo
 	return 0;
 }
 int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -331,7 +333,7 @@ int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, v
 	return 0;
 }
 int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
-	if (!subHandler.doneProcedures)
+	if (!canStartNewProcedure())
 		return 0;
 	if (inPhase == xplm_CommandBegin)
 	{
@@ -346,4 +348,15 @@ void doNextProcedure()
 {
 	if (subHandler.ProcedureType < SubHandler::Procedures::count)
 		startFunction((SubHandler::Procedures)subHandler.ProcedureType);
+}
+
+
+bool canStartNewProcedure()
+{
+	for (auto procedure : subHandler.procedures)
+	{
+		if (procedure)
+			return false;
+	}
+	return true;
 }
