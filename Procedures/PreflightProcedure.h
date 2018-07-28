@@ -1,6 +1,6 @@
 #pragma once
-#ifndef PowerUpProcedure_H
-#define PowerUpProcedure_H
+#ifndef PreflightProcedure_H
+#define PreflightProcedure_H
 
 #if APL
 #if defined(__MACH__)
@@ -32,11 +32,11 @@
 
 using namespace std;
 
-class PowerUpProcedure
+class PreflightProcedure
 {
 public:
-	
-	static int powerUpProcedure(int stage);
+
+	static int preflightProcedure(int stage);
 
 };
 #endif
