@@ -71,15 +71,15 @@ int PreflightProcedure::preflightProcedure(int stage)
 
 	else if (stage == 4)
 	{
-		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[8])) < 1)
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
+		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[9])) < 1)
+			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
 		return 1;
 	}
 
 	else if (stage == 5)
 	{
-		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[9])) < 1)
-			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
+		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[8])) < 1)
+			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
 		return 1;
 	}
 	else if (stage == 6) { //CAB UTIL, PASS SEAT
