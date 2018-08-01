@@ -144,15 +144,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Procedures\BeforeTakeoffProcedure.cpp" />
+    <ClCompile Include="Procedures\BeforeTaxiProcedure.cpp" />
+    <ClCompile Include="Procedures\CleanupProcedure.cpp" />
     <ClCompile Include="Procedures\PowerUpProcedure.cpp" />
     <ClCompile Include="Procedures\PreflightProcedure.cpp" />
+    <ClCompile Include="Procedures\ShutdownProcedure.cpp" />
     <ClCompile Include="SubHandler.cpp" />
     <ClCompile Include="ZiboCopilot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Procedures\BeforeTakeoffProcedure.h" />
+    <ClInclude Include="Procedures\BeforeTaxiProcedure.h" />
+    <ClInclude Include="Procedures\CleanupProcedure.h" />
     <ClInclude Include="Procedures\DataRefList.h" />
     <ClInclude Include="Procedures\PowerUpProcedure.h" />
     <ClInclude Include="Procedures\PreflightProcedure.h" />
+    <ClInclude Include="Procedures\ShutdownProcedure.h" />
     <ClInclude Include="SubHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
