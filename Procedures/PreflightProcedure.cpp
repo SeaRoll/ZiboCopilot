@@ -60,18 +60,29 @@ int PreflightProcedure::preflightProcedure(int stage)
 	else if (stage == 2) { //FUEL PUMPS
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[6])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft1"));
-
+		return 1;
+	}
+	else if (stage == 3)
+	{
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[7])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_lft2"));
+		return 1;
+	}
 
+	else if (stage == 4)
+	{
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[8])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt1"));
+		return 1;
+	}
 
+	else if (stage == 5)
+	{
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[9])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_pump_rgt2"));
 		return 1;
 	}
-	else if (stage == 3) { //CAB UTIL, PASS SEAT
+	else if (stage == 6) { //CAB UTIL, PASS SEAT
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[10])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/cab_util_toggle"));
 
@@ -79,22 +90,22 @@ int PreflightProcedure::preflightProcedure(int stage)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/autopilot/ife_pass_seat_toggle"));
 		return 1;
 	}
-	else if (stage == 4) { //EMERGENCY LIGHTS
+	else if (stage == 7) { //EMERGENCY LIGHTS
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[12])) < 1)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover09"));
 		return 1;
 	}
-	else if (stage == 5) { //SEAT BELTS
+	else if (stage == 8) { //SEAT BELTS
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[13])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/seatbelt_sign_dn"));
 		return 1;
 	}
-	else if (stage == 6) { //NO SMOKING ALWAYS ON
+	else if (stage == 9) { //NO SMOKING ALWAYS ON
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/no_smoking_dn"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/no_smoking_dn"));
 		return 1;
 	}
-	else if (stage == 7) { //WINDOW HEAT
+	else if (stage == 10) { //WINDOW HEAT
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[14])) == 0) {
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_l_fwd"));
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/window_heat_l_side"));
@@ -103,63 +114,66 @@ int PreflightProcedure::preflightProcedure(int stage)
 		}
 		return 1;
 	}
-	else if (stage == 8) {
+	else if (stage == 11) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[15])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/electric_hydro_pumps1"));
+		return 1;
+	}
+	else if (stage == 12)
+	{
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[16])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/electric_hydro_pumps2"));
 		return 1;
 	}
-	else if (stage == 9) {
+	else if (stage == 13) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[17])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/trim_air"));
-
 		return 1;
 	}
-	else if (stage == 10) {
+	else if (stage == 14) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/l_pack_up"));
 		return 1;
 	}
-	else if (stage == 11) {
+	else if (stage == 15) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/iso_valve_dn"));
 		return 1;
 	}
-	else if (stage == 12) {
+	else if (stage == 16) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/r_pack_up"));
 		return 1;
 	}
-	else if (stage == 13) {
+	else if (stage == 17) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[18])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_1"));
 		return 1;
 	}
-	else if (stage == 14) {
+	else if (stage == 18) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[20])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_apu"));
 		return 1;
 	}
-	else if (stage == 15) {
+	else if (stage == 19) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[19])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/bleed_air_2"));
 		return 1;
 	}
-	else if (stage == 16) {
+	else if (stage == 20) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/position_light_down"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/logo_light_on"));
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[21])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("sim/lights/beacon_lights_toggle"));
 		return 1;
 	}
-	else if (stage == 17) {
+	else if (stage == 21) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/eng_start_source_right"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/eng_start_source_right"));
 		return 1;
 	}
-	else if (stage == 18) {
+	else if (stage == 22) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/toggle_switch/fuel_flow_up"));
 		return 1;
 	}
-	else if (stage == 19) {
+	else if (stage == 23) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[22])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
 		XPLMSpeakString("Preflight Procedures Completed");
