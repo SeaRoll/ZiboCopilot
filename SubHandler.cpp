@@ -32,13 +32,10 @@ using namespace std;
 #include "SubHandler.h"
 #include "Procedures/PowerUpProcedure.h"
 #include "Procedures/PreflightProcedure.h"
-<<<<<<< HEAD
 #include "Procedures/BeforeTaxiProcedure.h"
 #include "Procedures/BeforeTakeoffProcedure.h"
 #include "Procedures/CleanupProcedure.h"
 #include "Procedures/ShutdownProcedure.h"
-=======
->>>>>>> 218bf8e29159bbb3a2a624c6cd0345e5973c23fc
 
 void SubHandler::finishProcedure(int id)
 {
