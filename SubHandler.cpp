@@ -48,7 +48,7 @@ void SubHandler::finishProcedure(int id)
 }
 
 
-void SubHandler::doProcedures(float elapsed) {
+void SubHandler::doProcedures() {
 	if (procedures[power_up]) {
 		if(PowerUpProcedure::powerUpProcedure(ProcedureStage) == 1)
 			ProcedureStage++;

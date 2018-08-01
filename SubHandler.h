@@ -54,7 +54,7 @@ public:
 	bool procedures[count] = { false };
 
 	// printname is not defined inside class defination
-	void doProcedures(float elapsed);
+	void doProcedures();
 	void finishProcedure(int id);
 };
 #endif

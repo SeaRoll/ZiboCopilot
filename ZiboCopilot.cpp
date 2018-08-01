@@ -289,11 +289,8 @@ void startFunction (SubHandler::Procedures procedure) {
 //-------------------------------------------------------- Procedure Loop ---------------------------------------//
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon)
 {
-	/* Elapsed Time */
-	const auto elapsed = XPLMGetElapsedTime();
-
 	if (!subHandler.doneProcedures) {
-		subHandler.doProcedures(elapsed);
+		subHandler.doProcedures();
 	}
 	else {
 		XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
