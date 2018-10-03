@@ -46,11 +46,11 @@ int BeforeTaxiProcedure::beforeTaxiProcedure(int stage)
 		return 1;
 	}
 	else if (stage == 4) {
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng2_start_cont"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/eng1_start_right"));
 		return 1;
 	}
 	else if (stage == 5) {
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng1_start_cont"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/eng2_start_right"));
 		return 1;
 	}
 	else if (stage == 6) {

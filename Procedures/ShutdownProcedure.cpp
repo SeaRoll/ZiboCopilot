@@ -119,11 +119,6 @@ int ShutdownProcedure::shutdownProcedure(int stage)
 	else if (stage == 15)
 	{
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/button_switch_cover02"));
-		return 1;
-	}
-	else if (stage == 16)
-	{
-		XPLMCommandOnce(XPLMFindCommand("sim/electrical/battery_1_off"));
 		XPLMSpeakString("Shutdown Procedures Completed");
 		return 2;
 	}
