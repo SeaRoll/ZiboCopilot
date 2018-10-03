@@ -36,6 +36,7 @@ int BeforeTakeoffProcedure::beforeTakeoffProcedure(int stage)
 	}
 	else if (stage == 1) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/wing_light_on"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/wing_light_off"));
 		return 1;
 	}
 	else if (stage == 2) {
