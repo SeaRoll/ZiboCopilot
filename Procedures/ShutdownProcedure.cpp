@@ -106,8 +106,8 @@ int ShutdownProcedure::shutdownProcedure(int stage)
 		return 1;
 	}
 	else if (stage == 13) {
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng1_start_off"));
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/rotary/eng2_start_off"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/eng1_start_left"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/eng2_start_left"));
 		return 1;
 	}
 	else if (stage == 14) {

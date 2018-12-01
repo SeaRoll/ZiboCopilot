@@ -40,6 +40,7 @@ SubHandler subHandler;
 XPLMMenuID g_menu_id;
 int g_menu_container_idx;
 int current_procedure = 0;
+
 char DataRefList::dataRefList[100][255] = {
 	"laminar/B738/toggle_switch/irs_left",						//IRS LEFT 0
 	"laminar/B738/toggle_switch/irs_right",						//IRS RIGHT 1
@@ -67,11 +68,12 @@ char DataRefList::dataRefList[100][255] = {
 	"laminar/B738/toggle_switch/capt_probes_pos",				//PROBE HEAT L 23
 	"laminar/B738/toggle_switch/fo_probes_pos",					//PROBE HEAT R 24
 	"laminar/B738/electrical/apu_bus_enable",					//CHECK APU BUS LIT 25
-	""
+	"laminar/B738/flt_ctrls/flap_lever",						//FLAPS LEVER 26
+	"laminar/B738/autobrake/autobrake_pos"						//AUTOBRAKE POS 27
 };
 
 
-//Commands
+//-------------------------------------------------------- Initiate Commands ------------------------------------//
 XPLMCommandRef cmdpowerUpProcedures = nullptr;
 XPLMCommandRef cmdpreflightProcedures = nullptr;
 XPLMCommandRef cmdbeforeTaxiProcedures = nullptr;
@@ -112,6 +114,8 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMAppendMenuItem(g_menu_id, "Before Takeoff Procedures", (void *)"before_takeoff", 1);
 	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", (void *)"clean_up", 1);
 	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", (void *)"shutdown", 1);
+	XPLMAppendMenuSeparator(g_menu_id);
+
 	XPLMAppendMenuSeparator(g_menu_id);
 	XPLMAppendMenuItem(g_menu_id, "Next Procedure", (void *)"next_procedure", 1);
 
@@ -252,6 +256,153 @@ void startFunction (SubHandler::Procedures procedure) {
 			subHandler.procedures[SubHandler::Procedures::before_take_off] = false;
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
+	}
+	//------------------------------------------------------------------------------------//
+	else if (procedure == SubHandler::gear_up)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::gear_up]) {
+			XPLMSpeakString("Gear up");
+			subHandler.procedures[SubHandler::Procedures::gear_up] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Gear up");
+			subHandler.procedures[SubHandler::Procedures::gear_up] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::climb_flaps1)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::climb_flaps1]) {
+			XPLMSpeakString("Flaps 1");
+			subHandler.procedures[SubHandler::Procedures::climb_flaps1] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping Flaps 1");
+			subHandler.procedures[SubHandler::Procedures::climb_flaps1] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::climb_flaps0)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::climb_flaps0]) {
+			XPLMSpeakString("Flaps up");
+			subHandler.procedures[SubHandler::Procedures::climb_flaps0] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping flaps up");
+			subHandler.procedures[SubHandler::Procedures::climb_flaps0] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::after_takeoff)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::after_takeoff]) {
+			XPLMSpeakString("gear off autobrake off");
+			subHandler.procedures[SubHandler::Procedures::after_takeoff] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping");
+			subHandler.procedures[SubHandler::Procedures::after_takeoff] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::climb_tenk)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::climb_tenk]) {
+			XPLMSpeakString("Beginning ten K climb procedures");
+			subHandler.procedures[SubHandler::Procedures::climb_tenk] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping ten K climb procedures");
+			subHandler.procedures[SubHandler::Procedures::climb_tenk] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::des_tenk)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::des_tenk]) {
+			XPLMSpeakString("Beginning ten K descent procedures");
+			subHandler.procedures[SubHandler::Procedures::des_tenk] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			XPLMSpeakString("Stopping ten K descent procedures");
+			subHandler.procedures[SubHandler::Procedures::des_tenk] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::des_flaps1)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::des_flaps1]) {
+			XPLMSpeakString("Flaps 1");
+			subHandler.procedures[SubHandler::Procedures::des_flaps1] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			subHandler.procedures[SubHandler::Procedures::des_flaps1] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::des_flaps5)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::des_flaps5]) {
+			XPLMSpeakString("Flaps 5");
+			subHandler.procedures[SubHandler::Procedures::des_flaps5] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			subHandler.procedures[SubHandler::Procedures::des_flaps5] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::des_flaps15)
+	{
+		if (!subHandler.procedures[SubHandler::Procedures::des_flaps15]) {
+			XPLMSpeakString("Gear Down flaps 15");
+			subHandler.procedures[SubHandler::Procedures::des_flaps15] = true;
+			subHandler.timeElapsed = XPLMGetElapsedTime();
+			XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+		}
+		else {
+			subHandler.ProcedureStage = 0;
+			subHandler.procedures[SubHandler::Procedures::des_flaps15] = false;
+			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+		}
+	}
+	else if (procedure == SubHandler::des_flaps30)
+	{
+	if (!subHandler.procedures[SubHandler::Procedures::des_flaps30]) {
+		XPLMSpeakString("flaps 30");
+		subHandler.procedures[SubHandler::Procedures::des_flaps30] = true;
+		subHandler.timeElapsed = XPLMGetElapsedTime();
+		XPLMRegisterFlightLoopCallback(MyFlightLoopCallback, 1.0, nullptr);
+	}
+	else {
+		subHandler.ProcedureStage = 0;
+		subHandler.procedures[SubHandler::Procedures::des_flaps30] = false;
+		XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
+	}
 	}
 	else if (procedure == SubHandler::clean_up)
 	{

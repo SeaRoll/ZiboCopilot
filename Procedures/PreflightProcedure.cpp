@@ -176,8 +176,6 @@ int PreflightProcedure::preflightProcedure(int stage)
 	else if (stage == 23) {
 		if (XPLMGetDatai(XPLMFindDataRef(DataRefList::dataRefList[22])) == 0)
 			XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
-
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
 		XPLMSpeakString("Preflight Procedures Completed");
 		return 2;
 	}

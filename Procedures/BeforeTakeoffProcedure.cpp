@@ -36,7 +36,6 @@ int BeforeTakeoffProcedure::beforeTakeoffProcedure(int stage)
 	}
 	else if (stage == 1) {
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/wing_light_on"));
-		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/wing_light_off"));
 		return 1;
 	}
 	else if (stage == 2) {
@@ -50,6 +49,7 @@ int BeforeTakeoffProcedure::beforeTakeoffProcedure(int stage)
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_up"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/switch/wing_light_off"));
 		XPLMSpeakString("Before Takeoff Procedures Completed");
 		return 2;
 	}

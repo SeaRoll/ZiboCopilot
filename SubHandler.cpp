@@ -36,6 +36,8 @@ using namespace std;
 #include "Procedures/BeforeTakeoffProcedure.h"
 #include "Procedures/CleanupProcedure.h"
 #include "Procedures/ShutdownProcedure.h"
+#include "Procedures/ClimbProcedures.h"
+#include "Procedures/DescentProcedures.h"
 
 void SubHandler::finishProcedure(int id)
 {
@@ -77,7 +79,69 @@ void SubHandler::doProcedures(float elapsed) {
 		else if (BeforeTakeoffProcedure::beforeTakeoffProcedure(ProcedureStage) == 2)
 			finishProcedure(before_take_off);
 	}
-
+	//Supplementary
+	if (procedures[gear_up]) {
+		if (ClimbProcedures::gearUp(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (ClimbProcedures::gearUp(ProcedureStage) == 2)
+			finishProcedure(gear_up);
+	}
+	if (procedures[climb_flaps1]) {
+		if (ClimbProcedures::flaps1(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (ClimbProcedures::flaps1(ProcedureStage) == 2)
+			finishProcedure(climb_flaps1);
+	}
+	if (procedures[climb_flaps0]) {
+		if (ClimbProcedures::flaps0(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (ClimbProcedures::flaps0(ProcedureStage) == 2)
+			finishProcedure(climb_flaps0);
+	}
+	if (procedures[after_takeoff]) {
+		if (ClimbProcedures::afterTakeoff(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (ClimbProcedures::afterTakeoff(ProcedureStage) == 2)
+			finishProcedure(after_takeoff);
+	}
+	if (procedures[climb_tenk]) {
+		if (ClimbProcedures::tenk(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (ClimbProcedures::tenk(ProcedureStage) == 2)
+			finishProcedure(climb_tenk);
+	}
+	//--des--//
+	if (procedures[des_tenk]) {
+		if (DescentProcedures::tenk(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (DescentProcedures::tenk(ProcedureStage) == 2)
+			finishProcedure(des_tenk);
+	}
+	if (procedures[des_flaps1]) {
+		if (DescentProcedures::flaps1(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (DescentProcedures::flaps1(ProcedureStage) == 2)
+			finishProcedure(des_flaps1);
+	}
+	if (procedures[des_flaps5]) {
+		if (DescentProcedures::flaps5(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (DescentProcedures::flaps5(ProcedureStage) == 2)
+			finishProcedure(des_flaps5);
+	}
+	if (procedures[des_flaps15]) {
+		if (DescentProcedures::flaps15(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (DescentProcedures::flaps15(ProcedureStage) == 2)
+			finishProcedure(des_flaps15);
+	}
+	if (procedures[des_flaps30]) {
+		if (DescentProcedures::flaps30(ProcedureStage) == 1)
+			ProcedureStage++;
+		else if (DescentProcedures::flaps30(ProcedureStage) == 2)
+			finishProcedure(des_flaps30);
+	}
+	//------------------------------//
 	if (procedures[clean_up]) {
 		if (CleanupProcedure::cleanupProcedure(ProcedureStage) == 1)
 			ProcedureStage++;

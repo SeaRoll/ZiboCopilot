@@ -88,9 +88,7 @@ int BeforeTaxiProcedure::beforeTaxiProcedure(int stage)
 		return 1;
 	}
 	else if (stage == 13) {
-		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/flaps_down"));
-		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/flaps_down"));
-		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/flaps_down"));
+		XPLMSetDataf(XPLMFindDataRef(DataRefList::dataRefList[26]), 0.375);
 		XPLMSpeakString("Before Taxi Procedures Completed");
 		return 2;
 	}

@@ -45,6 +45,9 @@ int CleanupProcedure::cleanupProcedure(int stage)
 	}
 	else if (stage == 3) {
 		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/speed_brakes_up_one"));
+		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/speed_brakes_up_one"));
+		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/speed_brakes_up_one"));
+		XPLMCommandOnce(XPLMFindCommand("sim/flight_controls/speed_brakes_up_one"));
 		return 1;
 	}
 	else if (stage == 4) {
