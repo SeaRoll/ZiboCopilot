@@ -19,6 +19,7 @@
 		1556E184210B581B00CE2BD1 /* ZiboCopilot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZiboCopilot.cpp; sourceTree = "<group>"; };
 		1556E186210B582500CE2BD1 /* SubHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubHandler.h; sourceTree = "<group>"; };
 		1556E187210B582B00CE2BD1 /* SubHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubHandler.cpp; sourceTree = "<group>"; };
+		15A8F41B21B9679400EFF099 /* Procedures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Procedures; sourceTree = "<group>"; };
 		D607B19909A556E400699BC3 /* ZiboCopilot.xpl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = ZiboCopilot.xpl; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A7BDA916A1DEA200D1426A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D6A7BDC016A1DEC000D1426A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -44,6 +45,7 @@
 		AC4E46B809C2E0B3006B7E1B /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				15A8F41B21B9679400EFF099 /* Procedures */,
 				1556E187210B582B00CE2BD1 /* SubHandler.cpp */,
 				1556E186210B582500CE2BD1 /* SubHandler.h */,
 				1556E184210B581B00CE2BD1 /* ZiboCopilot.cpp */,
@@ -144,6 +146,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -192,7 +195,7 @@
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
@@ -219,6 +222,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -266,7 +270,7 @@
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				MACH_O_TYPE = mh_bundle;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_LDFLAGS = (
 					"$(OTHER_LDFLAGS)",
 					"-Wl,-exported_symbol",

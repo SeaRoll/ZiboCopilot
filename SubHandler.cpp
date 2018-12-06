@@ -31,13 +31,21 @@ using namespace std;
 
 #include "SubHandler.h"
 #include "Procedures/PowerUpProcedure.h"
+#include "Procedures/PowerUpProcedure.cpp"
 #include "Procedures/PreflightProcedure.h"
+#include "Procedures/PreflightProcedure.cpp"
 #include "Procedures/BeforeTaxiProcedure.h"
+#include "Procedures/BeforeTaxiProcedure.cpp"
 #include "Procedures/BeforeTakeoffProcedure.h"
+#include "Procedures/BeforeTakeoffProcedure.cpp"
 #include "Procedures/CleanupProcedure.h"
+#include "Procedures/CleanupProcedure.cpp"
 #include "Procedures/ShutdownProcedure.h"
+#include "Procedures/ShutdownProcedure.cpp"
 #include "Procedures/ClimbProcedures.h"
+#include "Procedures/ClimbProcedures.cpp"
 #include "Procedures/DescentProcedures.h"
+#include "Procedures/DescentProcedures.cpp"
 
 void SubHandler::finishProcedure(int id)
 {
