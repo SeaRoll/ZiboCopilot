@@ -73,6 +73,12 @@ int CleanupProcedure::cleanupProcedure(int stage)
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_dn"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_dn"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/transponder_mode_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+        XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_up"));
 		XPLMSpeakString("Clean Up Procedures Completed");
 		return 2;
 	}
