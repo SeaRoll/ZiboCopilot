@@ -58,6 +58,11 @@ int ClimbProcedures::afterTakeoff(int stage)
 {
 
 	if (stage == 0) {
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
+		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_dn"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/knob/autobrake_up"));
 		XPLMCommandOnce(XPLMFindCommand("laminar/B738/push_button/gear_off"));
 		return 2;

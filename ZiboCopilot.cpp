@@ -69,7 +69,7 @@ char DataRefList::dataRefList[100][255] = {
 	"laminar/B738/toggle_switch/fo_probes_pos",					//PROBE HEAT R 24
 	"laminar/B738/electrical/apu_bus_enable",					//CHECK APU BUS LIT 25
 	"laminar/B738/flt_ctrls/flap_lever",						//FLAPS LEVER 26
-	"laminar/B738/autobrake/autobrake_pos"						//AUTOBRAKE POS 27
+	"sim/cockpit2/switches/auto_brake_level"					//AUTOBRAKE POS 27, 0 is RTO, 1 is OFF
 };
 
 
