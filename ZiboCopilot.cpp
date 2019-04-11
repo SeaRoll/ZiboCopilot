@@ -14,6 +14,7 @@
 #include "XPLMMenus.h"
 #include <cstdio>
 #include <cstring>
+#include <stdio.h>
 #if IBM
 #include <windows.h>
 #endif
@@ -40,6 +41,27 @@ SubHandler subHandler;
 XPLMMenuID g_menu_id;
 int g_menu_container_idx;
 int current_procedure = 0;
+
+char procedure_touser[55][255] = {
+	"Power Up",
+	"Pre Flight",
+	"Before Taxi",
+	"Before Takeoff",
+	"Gear Up",
+	"Flaps 1",
+	"Flaps 0",
+	"After Takeoff",
+	"Ten K Climb",
+	"Ten K Descent",
+	"Flaps 1",
+	"Flaps 5",
+	"Gear Down & Flaps 15",
+	"Flaps 30",
+	"Clean Up",
+	"Shutdown",
+	"Power Up",
+	"NULL"
+};
 
 char DataRefList::dataRefList[100][255] = {
 	"laminar/B738/toggle_switch/irs_left",						//IRS LEFT 0
@@ -72,6 +94,27 @@ char DataRefList::dataRefList[100][255] = {
 	"sim/cockpit2/switches/auto_brake_level"					//AUTOBRAKE POS 27, 0 is RTO, 1 is OFF
 };
 
+//-------------------------------------------------------- Window -----------------------------------------------//
+static XPLMWindowID	gWindow = NULL;
+static XPLMKeyFlags	gFlags = 0;
+static void MyDrawWindowCallback(
+	XPLMWindowID         inWindowID,
+	void* inRefcon);
+
+static void MyHandleKeyCallback(
+	XPLMWindowID         inWindowID,
+	char                 inKey,
+	XPLMKeyFlags         inFlags,
+	char                 inVirtualKey,
+	void* inRefcon,
+	int                  losingFocus);
+
+static int MyHandleMouseClickCallback(
+	XPLMWindowID         inWindowID,
+	int                  x,
+	int                  y,
+	XPLMMouseStatus      inMouse,
+	void* inRefcon);
 
 //-------------------------------------------------------- Initiate Commands ------------------------------------//
 XPLMCommandRef cmdpowerUpProcedures = nullptr;
@@ -141,6 +184,14 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMRegisterCommandHandler(cmdshutdownProcedures, funcshutdownProcedures, 1, nullptr);
 	XPLMRegisterCommandHandler(cmdnextStep, funcnextProcedures, 1, nullptr);
 
+	gWindow = XPLMCreateWindow(
+		50, 75, 400, 50,			/* Area of the window. */
+		1,							/* Start visible. */
+		MyDrawWindowCallback,		/* Callbacks */
+		MyHandleKeyCallback,
+		MyHandleMouseClickCallback,
+		NULL);
+
 	return 1;
 }
 
@@ -148,6 +199,7 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 PLUGIN_API void XPluginStop()
 {
 	// Since we created this menu, we'll be good citizens and clean it up as well
+	XPLMDestroyWindow(gWindow);
 	XPLMDestroyMenu(g_menu_id);
 	// If we were able to add a command to the aircraft menu, it will be automatically removed for us when we're unloaded
 }
@@ -157,6 +209,48 @@ PLUGIN_API int XPluginEnable() { return 1; }
 PLUGIN_API void XPluginReceiveMessage(XPLMPluginID inFrom, int inMsg, void * inParam) { }
 //-------------------------------------------------------- END --------------------------------------------------//
 
+
+
+//-------------------------------------------------------- WINDOW -----------------------------------------------//
+void MyDrawWindowCallback(
+	XPLMWindowID         inWindowID,
+	void* inRefcon)
+{
+	char	str[255];
+	int		left, top, right, bottom;
+	float	color[] = { 1.0, 1.0, 1.0 };
+
+	/* First get our window's location. */
+	XPLMGetWindowGeometry(inWindowID, &left, &top, &right, &bottom);
+
+	/* Draw a translucent dark box as our window outline. */
+	XPLMDrawTranslucentDarkBox(left, top, right, bottom);
+
+	/* Draw the string into the window. */
+	//From 0-15 ProcedureType
+	sprintf(str, "Next Procedure: %s", procedure_touser[subHandler.ProcedureType]);
+	XPLMDrawString(color, left + 5, top - 15, str, NULL, xplmFont_Basic);
+}
+
+void MyHandleKeyCallback(
+	XPLMWindowID         inWindowID,
+	char                 inKey,
+	XPLMKeyFlags         inFlags,
+	char                 inVirtualKey,
+	void* inRefcon,
+	int                  losingFocus)
+{
+}
+
+int MyHandleMouseClickCallback(
+	XPLMWindowID         inWindowID,
+	int                  x,
+	int                  y,
+	XPLMMouseStatus      inMouse,
+	void* inRefcon)
+{
+	return 0;
+}
 
 //-------------------------------------------------------- SUB MENU HANDLER -------------------------------------//
 void menu_handler(void * in_menu_ref, void * in_item_ref)
@@ -193,7 +287,6 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 		doNextProcedure();
 	}
 }
-
 
 //-------------------------------------------------------- Procedure Starter ------------------------------------//
 void startFunction (SubHandler::Procedures procedure) {
@@ -257,7 +350,7 @@ void startFunction (SubHandler::Procedures procedure) {
 			XPLMUnregisterFlightLoopCallback(MyFlightLoopCallback, nullptr);
 		}
 	}
-	//------------------------------------------------------------------------------------//
+	//-----------------------------------------------------------------------------------------------------------//
 	else if (procedure == SubHandler::gear_up)
 	{
 		if (!subHandler.procedures[SubHandler::Procedures::gear_up]) {
@@ -436,7 +529,6 @@ void startFunction (SubHandler::Procedures procedure) {
 	}
 }
 
-
 //-------------------------------------------------------- Procedure Loop ---------------------------------------//
 static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastFlightLoop, int inCounter, void * inRefcon)
 {
@@ -454,7 +546,6 @@ static float MyFlightLoopCallback(float inElapsedSinceLastCall, float inElapsedT
 	/* Return 1.0 to indicate that we want to be called again in 1 second. */
 	return 1.0;
 }
-
 
 //-------------------------------------------------------- Command Functions ------------------------------------//
 int funcpowerUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) { 
@@ -522,15 +613,12 @@ int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void 
 	return 0;
 }
 
-
 //-------------------------------------------------------- Next Procedure Function ------------------------------//
 void doNextProcedure()
 {
 	if (subHandler.ProcedureType < SubHandler::Procedures::count)
 		startFunction((SubHandler::Procedures)subHandler.ProcedureType);
 }
-
-
 bool canStartNewProcedure()
 {
 	for (auto procedure : subHandler.procedures)
