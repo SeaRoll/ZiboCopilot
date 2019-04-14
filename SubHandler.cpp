@@ -38,6 +38,14 @@ using namespace std;
 #include "Procedures/ShutdownProcedure.h"
 #include "Procedures/ClimbProcedures.h"
 #include "Procedures/DescentProcedures.h"
+#include "Procedures/PowerUpProcedure.cpp"
+#include "Procedures/PreflightProcedure.cpp"
+#include "Procedures/BeforeTaxiProcedure.cpp"
+#include "Procedures/BeforeTakeoffProcedure.cpp"
+#include "Procedures/CleanupProcedure.cpp"
+#include "Procedures/ShutdownProcedure.cpp"
+#include "Procedures/ClimbProcedures.cpp"
+#include "Procedures/DescentProcedures.cpp"
 
 void SubHandler::finishProcedure(int id)
 {
