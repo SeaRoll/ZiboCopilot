@@ -41,6 +41,7 @@ SubHandler subHandler;
 XPLMMenuID g_menu_id;
 int g_menu_container_idx;
 int current_procedure = 0;
+bool ui_active = true;
 
 char procedure_touser[55][255] = {
 	"Power Up",
@@ -158,9 +159,9 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMAppendMenuItem(g_menu_id, "Clean Up Procedures", (void *)"clean_up", 1);
 	XPLMAppendMenuItem(g_menu_id, "Shutdown Procedures", (void *)"shutdown", 1);
 	XPLMAppendMenuSeparator(g_menu_id);
-
-	XPLMAppendMenuSeparator(g_menu_id);
 	XPLMAppendMenuItem(g_menu_id, "Next Procedure", (void *)"next_procedure", 1);
+	XPLMAppendMenuSeparator(g_menu_id);
+	XPLMAppendMenuItem(g_menu_id, "Show/Hide UI", (void*)"showhideUI", 1);
 
 	const auto aircraft_menu = XPLMFindAircraftMenu();
 	if (aircraft_menu) // This will be nullptrptr unless this plugin was loaded with an aircraft (i.e., it was located in the current aircraft's "plugins" subdirectory)
@@ -224,12 +225,15 @@ void MyDrawWindowCallback(
 	XPLMGetWindowGeometry(inWindowID, &left, &top, &right, &bottom);
 
 	/* Draw a translucent dark box as our window outline. */
-	XPLMDrawTranslucentDarkBox(left, top, right, bottom);
+	if (ui_active)
+	{
+		XPLMDrawTranslucentDarkBox(left, top, right, bottom);
 
-	/* Draw the string into the window. */
-	//From 0-15 ProcedureType
-	sprintf(str, "Next Procedure: %s", procedure_touser[subHandler.ProcedureType]);
-	XPLMDrawString(color, left + 5, top - 15, str, NULL, xplmFont_Basic);
+		/* Draw the string into the window. */
+		//From 0-15 ProcedureType
+		sprintf(str, "Next Procedure: %s", procedure_touser[subHandler.ProcedureType]);
+		XPLMDrawString(color, left + 5, top - 15, str, NULL, xplmFont_Basic);
+	}
 }
 
 void MyHandleKeyCallback(
@@ -285,6 +289,17 @@ void menu_handler(void * in_menu_ref, void * in_item_ref)
 	else if (!strcmp(compare_string, "next_procedure"))
 	{
 		doNextProcedure();
+	}
+	else if (!strcmp(compare_string, "showhideUI"))
+	{
+		if (ui_active) 
+		{
+			ui_active = false;
+		}
+		else
+		{
+			ui_active = true;
+		}
 	}
 }
 
