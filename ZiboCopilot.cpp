@@ -124,6 +124,7 @@ XPLMCommandRef cmdbeforeTaxiProcedures = nullptr;
 XPLMCommandRef cmdbeforeTakeoffProcedures = nullptr;
 XPLMCommandRef cmdcleanUpProcedures = nullptr;
 XPLMCommandRef cmdshutdownProcedures = nullptr;
+XPLMCommandRef cmdshowHideUI = nullptr;
 XPLMCommandRef cmdnextStep = nullptr;
 
 
@@ -139,6 +140,7 @@ int funcbeforeTakeoffProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPha
 int funccleanUpProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcshutdownProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
+int funcshowHideUI(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon);
 void menu_handler(void *, void *);
 
 
@@ -177,6 +179,7 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	cmdcleanUpProcedures = XPLMCreateCommand("737/Zibocopilot/cleanUpProcedure", "Clean Up Procedure");
 	cmdshutdownProcedures = XPLMCreateCommand("737/Zibocopilot/shutdownProcedure", "Shutdown Procedure");
 	cmdnextStep = XPLMCreateCommand("737/Zibocopilot/nextStep", "Next Procedure");
+    cmdnextStep = XPLMCreateCommand("737/Zibocopilot/showHideUI", "Show Hide UI");
 	XPLMRegisterCommandHandler(cmdpowerUpProcedures, funcpowerUpProcedures, 1, nullptr);
 	XPLMRegisterCommandHandler(cmdpreflightProcedures, funcpreflightProcedures, 1, nullptr);
 	XPLMRegisterCommandHandler(cmdbeforeTaxiProcedures, funcbeforeTaxiProcedures, 1, nullptr);
@@ -184,6 +187,7 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig, char * outDesc)
 	XPLMRegisterCommandHandler(cmdcleanUpProcedures, funccleanUpProcedures, 1, nullptr);
 	XPLMRegisterCommandHandler(cmdshutdownProcedures, funcshutdownProcedures, 1, nullptr);
 	XPLMRegisterCommandHandler(cmdnextStep, funcnextProcedures, 1, nullptr);
+    XPLMRegisterCommandHandler(cmdshowHideUI, funcshowHideUI, 1, nullptr);
 
 	gWindow = XPLMCreateWindow(
 		50, 75, 400, 50,			/* Area of the window. */
@@ -626,6 +630,17 @@ int funcnextProcedures(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void 
 		doNextProcedure();
 	}
 	return 0;
+}
+int funcshowHideUI(XPLMCommandRef inCommand, XPLMCommandPhase inPhase, void * inRefcon) {
+    if (ui_active)
+    {
+        ui_active = false;
+    }
+    else
+    {
+        ui_active = true;
+    }
+    return 0;
 }
 
 //-------------------------------------------------------- Next Procedure Function ------------------------------//
